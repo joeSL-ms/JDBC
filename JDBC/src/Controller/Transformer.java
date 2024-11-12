@@ -5,12 +5,13 @@ import body.DB;
 
 import javax.swing.plaf.PanelUI;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Transformer {
     //this class
     private static DB db;
     private static void initDB(){}
-    private static String columnas(String tablename) {
+    private static String columns(String tablename) {
         return db.getColumans(tablename);
     }
     public static void initDB(String username,String password,String database, String servername){
@@ -32,13 +33,13 @@ public class Transformer {
     public static void alterTable(){
         Consults.alter();
     }
-    public static void updateTable(){
-        Consults.update();
+    public static void updateTable(String tablename, ArrayList<String> columns, ArrayList<String> values, int id){
+        Consults.update(tablename,columns,values,id);
     }
-    public static void deleteTable(){
-        Consults.delete();
+    public static void deleteTable(String tablename, int id){
+        Consults.delete(tablename,id);
     }
-    public static void insertTable(){
-        Consults.insert();
+    public static void insertTable(String tablename, columns(), ArrayList<String> data){
+        Consults.insert(tablename,columns,data);
     }
 }

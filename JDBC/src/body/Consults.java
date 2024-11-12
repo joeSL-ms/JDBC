@@ -6,28 +6,41 @@ public class Consults {
     public static void create(String tablename, ArrayList<String> columnas) {
         String consult = "CREATE TABLE " + tablename + "(" + alldata(columnas) + ");";
     }
-    public static void alter(){
+    //alter not now
+    public static void alter() {
         String consult = "";
     }
-    public static void update(String tablename, ArrayList<String> columns, ArrayList<String> values){
+
+    public static String update(String tablename, ArrayList<String> columns, ArrayList<String> values, int id) {
         String consult = "UPDATE" + tablename + "\n" +
-                "SET" + columnValue(columns,values) + "\n" +   //Depends on number of columns
-                "WHERE condición;";     //Depends on number of conditions, need to be specific
+                "SET" + columnValue(columns, values) + "\n" +   //Depends on number of columns
+                condition() + id + ";";
+        return consult;
     }
-    public static void delete(String tablename, String columns, ArrayList<String> data){
-        String consult = "DELETE FROM tabla_nombre WHERE condición;";
+
+    public static String delete(String tablename, int id) {
+        String consult = "DELETE FROM " + tablename + condition() + id +";";
+        return consult;
     }
-    public static void insert(String tablename, String columns, ArrayList<String> data) {
+
+    public static String insert(String tablename, String columns, ArrayList<String> data) {
         String consult = "INSERT INTO " + tablename + "(" + columns + ")" + "VALUES" + "(" + alldata(data) + ")";
+        return consult;
     }
-    private static String columnValue(ArrayList<String> columns, ArrayList<String> values){
+
+    private static String columnValue(ArrayList<String> columns, ArrayList<String> values) {
         StringBuilder content = new StringBuilder();
-        for (int i = 0 ; i < columns.size() ; i++){
+        for (int i = 0; i < columns.size(); i++) {
             content.append(columns.get(i)).append(" = ").append(values.get(i));
         }
         return String.valueOf(content);
     }
-    private static String alldata(ArrayList<String> contenido){
+
+    private static String condition() {
+        return " WHERE ID = ";
+    }
+
+    private static String alldata(ArrayList<String> contenido) {
         return String.join(",", contenido);
     }
 }
