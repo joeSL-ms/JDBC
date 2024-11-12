@@ -1,20 +1,17 @@
 package Controller;
 
-import data.DB;
+import body.Consults;
+import body.DB;
 
+import javax.swing.plaf.PanelUI;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Transformer {
+    //this class
     private static DB db;
-    public static void create(String tablename, ArrayList<String>columnas) {
-        String consult = "CREATE TABLE " + tablename + "(" + alldata(columnas) + ")";
-    }
-
-    public static void insert(String tablename, ArrayList<String> data) {
-        String consult = "INSERT INTO " + tablename + "(" + columnas(tablename) + ")" + "VALUES" + "(" + alldata(data) + ")";
-    }
-    private static void initDB(){
+    private static void initDB(){}
+    private static String columnas(String tablename) {
+        return db.getColumans(tablename);
     }
     public static void initDB(String username,String password,String database, String servername){
         db = new DB(username,database,password,servername);
@@ -32,10 +29,16 @@ public class Transformer {
             throw new RuntimeException(e);
         }
     }
-    private static String columnas(String tablename) {
-        return db.getColumans(tablename);
+    public static void alterTable(){
+        Consults.alter();
     }
-    private static String alldata(ArrayList<String> contenido){
-        return String.join(",", contenido);
+    public static void updateTable(){
+        Consults.update();
+    }
+    public static void deleteTable(){
+        Consults.delete();
+    }
+    public static void insertTable(){
+        Consults.insert();
     }
 }
