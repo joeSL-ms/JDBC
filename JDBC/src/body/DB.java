@@ -144,6 +144,7 @@ public class DB {
         }
         return datos;
     }
+
     //this method just only use to get a name of columns of the table,
     // reuse the main function(consult) but adding a new action.
     public String getColumans(String tabla) {
@@ -160,8 +161,24 @@ public class DB {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        columnsData = String.join(", ",columns);
+        columnsData = String.join(", ", columns);
         return columnsData;
+    }
+
+    public ArrayList<String> getTables() {
+        ArrayList<String> tables = new ArrayList<>();
+        try {
+            ResultSet rs = ejecutor.executeQuery("SHOW TABLES");
+            ResultSetMetaData metaData = rs.getMetaData();
+
+            while (rs.next()) {
+                String tableName = rs.getString(1);
+                tables.add(tableName);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return tables;
     }
 
     public void closeConnection() {

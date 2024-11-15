@@ -3,14 +3,6 @@ package body;
 import java.util.ArrayList;
 
 public class Consults {
-    public static void create(String tablename, ArrayList<String> columnas) {
-        String consult = "CREATE TABLE " + tablename + "(" + alldata(columnas) + ");";
-    }
-    //alter not now
-    public static void alter() {
-        String consult = "";
-    }
-
     public static String update(String tablename, ArrayList<String> columns, ArrayList<String> values, int id) {
         String consult = "UPDATE" + tablename + "\n" +
                 "SET" + columnValue(columns, values) + "\n" +   //Depends on number of columns
@@ -19,7 +11,7 @@ public class Consults {
     }
 
     public static String delete(String tablename, int id) {
-        String consult = "DELETE FROM " + tablename + condition() + id +";";
+        String consult = "DELETE FROM " + tablename + condition() + id + ";";
         return consult;
     }
 

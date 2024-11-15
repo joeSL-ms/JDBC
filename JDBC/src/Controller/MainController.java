@@ -3,35 +3,46 @@ package Controller;
 import Controller.ScannerSJ;
 import views.Menu;
 
+import java.util.ArrayList;
+
 public class MainController {
-    public static void actions(){
+    public static void actions() {
+        String table = null;
+        String user;
+        String psw;
+        String database;
+        ScannerSJ usu = new ScannerSJ();
         int sl;
         do {
             sl = ControllerMenu.mainMenu();
-            switch (sl){
+            user = usu.toString("Indica el nombre de usuario");
+            psw = usu.toString("Inserta tu contraseña");
+            database = usu.toString("Como se llama la base de datos que vas a acceder?");
+
+            Transformer.initDB(user,psw,database);
+            table = ControllerMenu.tables(Transformer.showTables());
+            switch (sl) {
                 case 1://CRUD
                     do {
                         sl = ControllerMenu.crudMenu();
-                        switch (sl){
+                        switch (sl) {
                             case 1:
-                                //CREATE
+                                //UPDATE
+                                Transformer.updateTable(table,new ArrayList<>(),);
                                 break;
                             case 2:
-                                //ALTER
+                                //DELETE
+                                Transformer.deleteOfTable(table,);
                                 break;
                             case 3:
-                                //UPDATE
-                                break;
-                            case 4:
-                                //DELETE
-                                break;
-                            case 5:
+
+                                Transformer.insertOnTable(table,data);
                                 //INSERT
                                 break;
                             default:
                                 break;
                         }
-                    }while(sl != 5);
+                    } while (sl != 4);
                     break;
                 case 2:
                     //SHOW ALL DATA
@@ -45,6 +56,6 @@ public class MainController {
                 default:
                     break;
             }
-        }while(sl != 5);
+        } while (sl != 5);
     }
 }
