@@ -147,7 +147,7 @@ public class DB {
 
     //this method just only use to get a name of columns of the table,
     // reuse the main function(consult) but adding a new action.
-    public String getColumans(String tabla) {
+    public ArrayList<String> getColumans(String tabla) {
         int nColumns;
         ArrayList<String> columns = new ArrayList<>();
         String columnsData;
@@ -161,8 +161,7 @@ public class DB {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        columnsData = String.join(", ", columns);
-        return columnsData;
+        return columns;
     }
 
     public ArrayList<String> getTables() {

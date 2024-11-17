@@ -1,7 +1,7 @@
 package Controller;
 
 import Controller.ScannerSJ;
-import views.Menu;
+import body.Choice;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,9 @@ public class MainController {
         String user;
         String psw;
         String database;
+        //ArrayData
+        ArrayList<String> columns;
+
         ScannerSJ usu = new ScannerSJ();
         int sl;
         do {
@@ -19,33 +22,38 @@ public class MainController {
             psw = usu.toString("Inserta tu contraseña");
             database = usu.toString("Como se llama la base de datos que vas a acceder?");
 
+            //Initialize DB connection
             Transformer.initDB(user,psw,database);
-            table = ControllerMenu.tables(Transformer.showTables());
+            table = ControllerMenu.uniqInfo(Transformer.showTables());
             switch (sl) {
                 case 1://CRUD
                     do {
+                        //Options that you can do.
                         sl = ControllerMenu.crudMenu();
                         switch (sl) {
                             case 1:
                                 //UPDATE
-                                Transformer.updateTable(table,new ArrayList<>(),);
+                                columns = ControllerMenu.multiInfo(Transformer.showColumns(table),"Cuantas columnas vas a modificar?");
+                                Transformer.updateTable(table,columns, Choice.newValues(columns), usu.toInt("Indica la ID que deseas cambiar"));
                                 break;
                             case 2:
                                 //DELETE
-                                Transformer.deleteOfTable(table,);
+                                Transformer.deleteOfTable(table,usu.toInt("Indica la ID que deseas cambiar"));
                                 break;
                             case 3:
-
-                                Transformer.insertOnTable(table,data);
                                 //INSERT
+                                Transformer.insertOnTable(table,Choice.newValues(Transformer.showColumns(table)));
                                 break;
                             default:
+                                System.out.println("La opcion elegida no se reconoce, vuelva a intentarlo" +
+                                        "Si se ha equivocado vuelva a atras");
                                 break;
                         }
                     } while (sl != 4);
                     break;
                 case 2:
                     //SHOW ALL DATA
+                    
                     break;
                 case 3:
                     //SEARCH INFO BY DATE

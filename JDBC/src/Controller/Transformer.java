@@ -14,7 +14,7 @@ public class Transformer {
     }
 
     private static String columns(String tablename) {
-        return db.getColumans(tablename);
+        return alldata(db.getColumans(tablename));
     }
 
     public static void initDB(String username, String password, String database, String servername) {
@@ -47,14 +47,16 @@ public class Transformer {
         Consults.insert(tablename, columns(tablename), data);
     }
 
-    public static void showColumns(String tablename){
-        System.out.println("Las columnas de la tabla" + tablename + "son: " + columns(tablename));
+    public static ArrayList<String> showColumns(String tablename){
+        return db.getColumans(tablename);
     }
 
     public static ArrayList<String> showTables(){
         return db.getTables();
     }
-
+    private static String alldata(ArrayList<String> contenido) {
+        return String.join(",", contenido);
+    }
     public static void getData(){
 
     }

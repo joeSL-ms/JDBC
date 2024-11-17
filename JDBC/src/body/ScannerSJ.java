@@ -29,6 +29,15 @@ public class ScannerSJ {
         }
         return respuestaInt;
     }
+    public int toInt() {
+        try {
+            respuestaInt = usu.nextInt();
+            usu.nextLine();
+        } catch (InputMismatchException e) {
+            System.err.println(e);
+        }
+        return respuestaInt;
+    }
 
     public char toChar(String contenido) {
         System.out.println(contenido);

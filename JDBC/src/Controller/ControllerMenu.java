@@ -8,19 +8,23 @@ import java.util.ArrayList;
 public class ControllerMenu {
     public static int mainMenu() {
         //change variable
-        String[] menu = new String[0];
+        String[] menu = {"CRUD"};
         Menu.mostrarMenu(menu);
-        return Choice.getAnswer(menu);
+        return Choice.getAnswer();
     }
-
+    //Show options that you can do with your data
     public static int crudMenu() {
-        String[] CRUD = new String[0];
+        String[] CRUD = {"Update","Delete","Insert","Volver"};
         Menu.mostrarMenu(CRUD);
-        return Choice.getAnswer(CRUD);
+        return Choice.getAnswer();
     }
-
-    public static String tables(ArrayList<String> tables){
-        Menu.mostrarMenu(tables);
-        return tables.get(Choice.getAnswer(tables));
+    //Show Tables that exist in your DB
+    public static String uniqInfo(ArrayList<String> data){
+        Menu.mostrarMenu(data);
+        return data.get(Choice.getAnswer(data));
+    }
+    public static ArrayList<String> multiInfo(ArrayList<String> data,String question){
+        Menu.mostrarMenu(data);
+        return Choice.getAnswers(data,question);
     }
 }
