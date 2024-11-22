@@ -1,9 +1,11 @@
-package body;
+package Model;
 
 import com.mysql.jdbc.Connection;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -14,6 +16,8 @@ public class DB {
     private String servername;
     private Connection conexion;
     private Statement ejecutor;
+    private boolean connect;
+
 
     public DB(String username, String database, String password, String servername) {
         this.username = username;
@@ -33,12 +37,28 @@ public class DB {
         this.ejecutor = null;
     }
 
+    public Statement getEjecutor() {
+        return ejecutor;
+    }
+
+    public void setEjecutor(Statement ejecutor) {
+        this.ejecutor = ejecutor;
+    }
+
+    public boolean isConnect() {
+        return connect;
+    }
+
+    public void setConnect(boolean connect) {
+        this.connect = connect;
+    }
+
     public Connection getConexion() {
         return conexion;
     }
 
-    public void setConexion(Connection conexion) {
-        this.conexion = conexion;
+    public void setConexion(java.sql.Connection conexion) {
+        this.conexion = (Connection) conexion;
     }
 
     public String getUsername() {
@@ -102,15 +122,15 @@ public class DB {
             //conectar con la base de datos
             Class.forName("com.mysql.jdbc.Driver");
             setConexion(DriverManager.getConnection("jdbc:mysql://" + getServername() + "/" + getDatabase(),
-                    "adminphp", getPassword()));
+                    getUsername(), getPassword()));
             initStatement();
+            setConnect(true);
         } catch (ClassNotFoundException | SQLException ex) {
-            ex.printStackTrace();
+            System.err.println("No se ha podido conectar a la base de datos");
+            ;
         }
     }
 
-    private void setConexion(java.sql.Connection adminphp) {
-    }
 
     //Method witch main function is establish an activity with database, example: queries,update,delete,inserts
     private void initStatement() {
@@ -125,6 +145,13 @@ public class DB {
         }
     }
 
+    public void udiTables(String sql) {
+        try {
+            getEjecutor().executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //This method is specific to do consults
     public ArrayList<String> consult(String sql) throws SQLException {
@@ -141,6 +168,35 @@ public class DB {
             }
         } catch (SQLException e) {
             System.err.println(e);
+        }
+        return datos;
+    }
+
+    public ArrayList<List<String>> extracDataFromTable(String table) {
+        ArrayList<List<String>> datos = new ArrayList<>();
+        String[] lista;
+        ResultSet rs = null;
+        List<String> columns = getColumans(table); // Guardamos las columnas en una variable
+        int size = columns.size();
+        try {
+            rs = ejecutor.executeQuery("SELECT * FROM " + table + ";");
+            while (rs.next()) {
+                lista = new String[size];
+                for (int i = 0; i < size; i++) {
+                    lista[i] = rs.getString(columns.get(i)); // Usamos columns directamente
+                }
+                datos.add(new ArrayList<>(Arrays.asList(lista))); // Usamos una lista mutable
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close(); // Asegúrate de cerrar el ResultSet
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         return datos;
     }

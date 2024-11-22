@@ -1,7 +1,5 @@
 package views;
 
-import Controller.ScannerSJ;
-
 import java.util.ArrayList;
 
 public class Menu {
